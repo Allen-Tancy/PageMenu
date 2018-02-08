@@ -47,7 +47,13 @@ open class CAPSPageMenu: UIViewController {
     var selectionIndicatorView : UIView = UIView()
 
     public var currentPageIndex : Int = 0
-    var lastPageIndex : Int = 0
+	var lastPageIndex : Int = 0 {
+		didSet {
+			self.isLastPageRemoved = false
+		}
+	}
+	
+	var isLastPageRemoved:Bool = false
 
     var currentOrientationIsPortrait : Bool = true
     var pageIndexForOrientationChange : Int = 0
@@ -193,7 +199,7 @@ extension CAPSPageMenu {
                 self.selectionIndicatorView.frame = CGRect(x: selectionIndicatorX, y: self.selectionIndicatorView.frame.origin.y, width: selectionIndicatorWidth, height: self.selectionIndicatorView.frame.height)
                 
                 // Switch newly selected menu item title label to selected color and old one to unselected color
-                if self.menuItems.count > 0 {
+                if self.menuItems.count > 0 && !self.isLastPageRemoved {
                     if self.menuItems[self.lastPageIndex].titleLabel != nil && self.menuItems[self.currentPageIndex].titleLabel != nil {
                         self.menuItems[self.lastPageIndex].titleLabel!.textColor = self.configuration.unselectedMenuItemLabelColor
                         self.menuItems[self.currentPageIndex].titleLabel!.textColor = self.configuration.selectedMenuItemLabelColor
