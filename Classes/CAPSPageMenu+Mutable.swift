@@ -64,6 +64,7 @@ extension CAPSPageMenu {
 	}
 	
 	public func removeLastViewController(_ n: Int = 1) {
+		guard n > 0 else { return }
 		for _ in 1...n {
 			self.menuItems.removeLast().removeFromSuperview()
 			totalMenuItemWidthIfDifferentWidths -= self.menuItemWidths.removeLast()
