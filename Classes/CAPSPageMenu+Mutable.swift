@@ -32,7 +32,7 @@ extension CAPSPageMenu {
 			let controllerTitle : String? = viewController.title
 			
 			let titleText : String = controllerTitle != nil ? controllerTitle! : "Menu \(Int(index) + 1)"
-			let itemWidthRect : CGRect = (titleText as NSString).boundingRect(with: CGSize(width: 1000, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName:configuration.menuItemFont], context: nil)
+			let itemWidthRect : CGRect = (titleText as NSString).boundingRect(with: CGSize(width: 1000, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font):configuration.menuItemFont]), context: nil)
 			configuration.menuItemWidth = itemWidthRect.width
 			
 			menuItemFrame = CGRect(x: totalMenuItemWidthIfDifferentWidths + configuration.menuMargin + (configuration.menuMargin * index), y: 0.0, width: configuration.menuItemWidth, height: configuration.menuHeight)
@@ -81,7 +81,7 @@ extension CAPSPageMenu {
 		let controllerTitle = lastVC.title
 		let titleText : String = controllerTitle != nil ? controllerTitle! : "Menu \(Int(lastIndex))"
 		totalMenuItemWidthIfDifferentWidths -= self.menuItemWidths.removeLast()
-		let itemWidthRect : CGRect = (titleText as NSString).boundingRect(with: CGSize(width: 1000, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName:configuration.menuItemFont], context: nil)
+		let itemWidthRect : CGRect = (titleText as NSString).boundingRect(with: CGSize(width: 1000, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font):configuration.menuItemFont]), context: nil)
 		configuration.menuItemWidth = itemWidthRect.width
 		let menuItemFrame = CGRect(x: totalMenuItemWidthIfDifferentWidths + configuration.menuMargin + (configuration.menuMargin * CGFloat(lastIndex)), y: 0.0, width: configuration.menuItemWidth, height: configuration.menuHeight)
 		totalMenuItemWidthIfDifferentWidths += itemWidthRect.width
@@ -99,4 +99,15 @@ extension CAPSPageMenu {
 			menuScrollView.contentSize = CGSize(width: (totalMenuItemWidthIfDifferentWidths + configuration.menuMargin) + CGFloat(controllerArray.count) * configuration.menuMargin, height: configuration.menuHeight)
 		}
 	}
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
 }
